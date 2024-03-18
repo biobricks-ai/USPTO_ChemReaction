@@ -26,5 +26,5 @@ cat $listpath/files.txt | tail -n +4 | xargs -P14 -n1 bash -c '
   filename="${0%.*}"
   echo '$rawpath'/$filename/$filename.txt
   echo '$brickpath'/$filename.parquet
-  python stages/csv2parquet.py '$rawpath'/$filename.txt '$brickpath'/$filename.parquet
+  python3 stages/csv2parquet.py '$rawpath'/$filename.txt '$brickpath'/$filename.parquet
 '
