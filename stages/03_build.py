@@ -23,3 +23,4 @@ def process_files(start_path, output_dir):
 
 process_files('raw', 'brick')
 
+    
