@@ -4,4 +4,7 @@ logs
 /brick
 /raw
 /myenv
+scratch.py
+*.png
+
 

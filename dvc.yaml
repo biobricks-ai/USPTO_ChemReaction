@@ -28,4 +28,4 @@ stages:
       - stages/03_build.py
       - raw
     outs:
-      - output.parquet  # Assuming this is the output of build.py
+      - brick/

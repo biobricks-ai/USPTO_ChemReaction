@@ -15,12 +15,12 @@ stages:
     deps:
     - path: stages/01_download.sh
       hash: md5
-      md5: c88c4aa58e6929c4ea0f8e220c57947f
-      size: 583
+      md5: 9a8cd74ee4da2d6118043d8bc5798d9b
+      size: 145
     outs:
     - path: download
       hash: md5
-      md5: d75ccad85f08cc80395e36590d48b84d.dir
+      md5: 1927e589a46697b7afd7d6c780467f24.dir
       size: 1494666791
       nfiles: 1
   unzip:
@@ -28,17 +28,34 @@ stages:
     deps:
     - path: download
       hash: md5
-      md5: d75ccad85f08cc80395e36590d48b84d.dir
+      md5: 1927e589a46697b7afd7d6c780467f24.dir
       size: 1494666791
       nfiles: 1
     - path: stages/02_unzip.sh
       hash: md5
-      md5: 877b0fba1d8f48af70bd2f9da6e397e5
-      size: 1342
-      isexec: true
+      md5: 9a406882c4e2bfb5bc64c76189783f4a
+      size: 683
     outs:
     - path: raw
       hash: md5
       md5: e3b40ae741f3cf4133fbe3d62e006013.dir
       size: 31626631837
       nfiles: 3833
+  build:
+    cmd: python stages/03_build.py
+    deps:
+    - path: raw
+      hash: md5
+      md5: e3b40ae741f3cf4133fbe3d62e006013.dir
+      size: 31626631837
+      nfiles: 3833
+    - path: stages/03_build.py
+      hash: md5
+      md5: 3f10200cc12c05473e4ebfb6289f52d6
+      size: 1012
+    outs:
+    - path: brick/
+      hash: md5
+      md5: d9f5de8c2ac324b4351a3509f19c9723.dir
+      size: 517011829
+      nfiles: 2
