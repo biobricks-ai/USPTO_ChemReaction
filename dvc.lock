@@ -10,3 +10,35 @@ stages:
     - path: data/mtcars.parquet
       md5: 77cf29accf9535522fad7db1486eff9a
       size: 6243
+  download:
+    cmd: stages/01_download.sh
+    deps:
+    - path: stages/01_download.sh
+      hash: md5
+      md5: c88c4aa58e6929c4ea0f8e220c57947f
+      size: 583
+    outs:
+    - path: download
+      hash: md5
+      md5: d75ccad85f08cc80395e36590d48b84d.dir
+      size: 1494666791
+      nfiles: 1
+  unzip:
+    cmd: stages/02_unzip.sh
+    deps:
+    - path: download
+      hash: md5
+      md5: d75ccad85f08cc80395e36590d48b84d.dir
+      size: 1494666791
+      nfiles: 1
+    - path: stages/02_unzip.sh
+      hash: md5
+      md5: 877b0fba1d8f48af70bd2f9da6e397e5
+      size: 1342
+      isexec: true
+    outs:
+    - path: raw
+      hash: md5
+      md5: e3b40ae741f3cf4133fbe3d62e006013.dir
+      size: 31626631837
+      nfiles: 3833

@@ -1,5 +1,3 @@
-# Brick DVC stages
-# See https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#pipelines-files-dvcyaml
 
 # The complete process can be executed using:
 # dvc repro
@@ -15,21 +13,19 @@ stages:
       - stages/01_download.sh
     outs:
       - download
-      - list
+
   unzip: 
     cmd: stages/02_unzip.sh
     deps:
       - stages/02_unzip.sh
       - download
-      - list
     outs:
       - raw
+
   build: 
-    cmd: stages/03_build.sh
+    cmd: python stages/03_build.py
     deps:
-      - stages/03_build.sh
-      - stages/csv2parquet.sh
+      - stages/03_build.py
       - raw
-      - list
     outs:
-      - brick
+      - output.parquet  # Assuming this is the output of build.py

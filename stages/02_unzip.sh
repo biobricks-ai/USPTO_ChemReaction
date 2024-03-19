@@ -1,6 +1,33 @@
 #!/usr/bin/env bash
+extract() {
+    local sourcefile="$1"
+    local destdir="$2"
 
-# Script to unzip files
+    # Determine file type
+    local filetype=$(file --brief --mime-type "$sourcefile")
+
+    # Extract based on filetype
+    case "$filetype" in
+        application/zip|application/x-zip-compressed)
+            unzip -o "$sourcefile" -d "$destdir"
+            ;;
+        application/x-7z-compressed)
+            7z x "$sourcefile" -o"$destdir"
+            ;;
+        *)
+            echo "Unsupported file type: $sourcefile"
+            return
+            ;;
+    esac
+}
+
+# Function to find and extract nested archives
+extract_nested() {
+    local searchdir="$1"
+    find "$searchdir" -mindepth 1 -type f \( -name '*.zip' -o -name '*.7z' \) -print0 | while IFS= read -r -d '' file; do
+        extract "$file" "$(dirname "$file")"
+    done
+}
 
 # Get local path
 localpath=$(pwd)
@@ -10,19 +37,19 @@ echo "Local path: $localpath"
 downloadpath="$localpath/download"
 echo "Download path: $downloadpath"
 
-# Set list path
-listpath="$localpath/list"
-echo "List path: $listpath"
-
 # Create raw path
 rawpath="$localpath/raw"
 mkdir -p $rawpath
 echo "Raw path: $rawpath"
 
-# Unzip files in parallel
-cat $listpath/files.txt | tail -n +2 | xargs -P14 -n1 bash -c '
-  filename="${0%.*}"
-  echo '$downloadpath'/$0
-  echo '$rawpath'/$filename
-  unzip '$downloadpath'/$0 -d '$rawpath'/$filename
-'
+# Main execution
+primaryfile="chemical_reactions.zip"
+primarypath="$downloadpath/$primaryfile"
+
+# Extract primary file
+if [[ -f "$primarypath" ]]; then
+    extract "$primarypath" "$rawpath"
+    extract_nested "$rawpath"
+else
+    echo "Primary file not found: $primarypath"
+fi
