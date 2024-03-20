@@ -51,8 +51,8 @@ stages:
       nfiles: 3833
     - path: stages/03_build.py
       hash: md5
-      md5: 3f10200cc12c05473e4ebfb6289f52d6
-      size: 1012
+      md5: 8f460a33e8434aae385d59152c0c1757
+      size: 633
     outs:
     - path: brick/
       hash: md5
