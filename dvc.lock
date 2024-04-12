@@ -1,61 +1,52 @@
+---
 schema: '2.0'
 stages:
-  1-stage:
-    cmd: Rscript stages/01-stage.R
-    deps:
-    - path: stages/01-stage.R
-      md5: c468dc14527e00c339f146e1dba2bd3b
-      size: 118
-    outs:
-    - path: data/mtcars.parquet
-      md5: 77cf29accf9535522fad7db1486eff9a
-      size: 6243
-  download:
-    cmd: stages/01_download.sh
-    deps:
-    - path: stages/01_download.sh
-      hash: md5
-      md5: 9a8cd74ee4da2d6118043d8bc5798d9b
-      size: 145
-    outs:
-    - path: download
-      hash: md5
-      md5: 1927e589a46697b7afd7d6c780467f24.dir
-      size: 1494666791
-      nfiles: 1
-  unzip:
-    cmd: stages/02_unzip.sh
-    deps:
-    - path: download
-      hash: md5
-      md5: 1927e589a46697b7afd7d6c780467f24.dir
-      size: 1494666791
-      nfiles: 1
-    - path: stages/02_unzip.sh
-      hash: md5
-      md5: 9a406882c4e2bfb5bc64c76189783f4a
-      size: 683
-    outs:
-    - path: raw
-      hash: md5
-      md5: e3b40ae741f3cf4133fbe3d62e006013.dir
-      size: 31626631837
-      nfiles: 3833
   build:
     cmd: python stages/03_build.py
     deps:
-    - path: raw
-      hash: md5
+    - hash: md5
       md5: e3b40ae741f3cf4133fbe3d62e006013.dir
-      size: 31626631837
       nfiles: 3833
-    - path: stages/03_build.py
-      hash: md5
+      path: raw
+      size: 31626631837
+    - hash: md5
       md5: 8f460a33e8434aae385d59152c0c1757
+      path: stages/03_build.py
       size: 633
     outs:
-    - path: brick/
-      hash: md5
+    - hash: md5
       md5: d9f5de8c2ac324b4351a3509f19c9723.dir
-      size: 517011829
       nfiles: 2
+      path: brick/
+      size: 517011829
+  download:
+    cmd: stages/01_download.sh
+    deps:
+    - hash: md5
+      md5: 9a8cd74ee4da2d6118043d8bc5798d9b
+      path: stages/01_download.sh
+      size: 145
+    outs:
+    - hash: md5
+      md5: 1927e589a46697b7afd7d6c780467f24.dir
+      nfiles: 1
+      path: download
+      size: 1494666791
+  unzip:
+    cmd: stages/02_unzip.sh
+    deps:
+    - hash: md5
+      md5: 1927e589a46697b7afd7d6c780467f24.dir
+      nfiles: 1
+      path: download
+      size: 1494666791
+    - hash: md5
+      md5: 9a406882c4e2bfb5bc64c76189783f4a
+      path: stages/02_unzip.sh
+      size: 683
+    outs:
+    - hash: md5
+      md5: e3b40ae741f3cf4133fbe3d62e006013.dir
+      nfiles: 3833
+      path: raw
+      size: 31626631837
