@@ -5,7 +5,7 @@ extract() {
 
     case "$filetype" in
         application/zip|application/x-zip-compressed) unzip -o "$sourcefile" -d "$destdir" ;;
-        application/x-7z-compressed) 7z x "$sourcefile" -o"$destdir" ;;
+        application/x-7z-compressed) python3 extract_7z.py "$sourcefile" "$destdir" ;;
         *) echo "Unsupported file type: $sourcefile" ; return ;;
     esac
 }
